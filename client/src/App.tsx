@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react'
-import socket from 'socket.io-client'
+import  { useEffect } from 'react'
+import { useSocket } from './context/room-context';
 
 const App = () => {
-  const url = "http://localhost:8080"
+  const socket = useSocket();
   useEffect(()=>{
-    socket(url);
+ 
   },[])
   return (
-    <div>
-      <button className='text-red-500'>start a new meeting.</button>
+    <div className='flex min-h-screen justify-center items-center'>
+      <button className='px-8 py-2 rounded-md bg-slate-800 text-white hover:ring-1 text-lg'>Start a new meeting</button>
     </div>
   )
 }

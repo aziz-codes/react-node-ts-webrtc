@@ -19,9 +19,21 @@ io.on("connection",(socket)=>{
 console.log('user is connected');
 
 
+// join room event.
+socket.on("join-room",()=>{
+  console.log("join room event triggered.")
+})
+
+
+
+// socket disconnect event.
 socket.on("disconnect",()=>{
   console.log('user disconnected.')
 })
+
+
+
+// end of main socket.
 })
 
 server.listen(port, () => {

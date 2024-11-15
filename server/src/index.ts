@@ -2,6 +2,7 @@ import express from "express";
 import http from "http";
 import { Server } from "socket.io";
 import cors from 'cors';
+import { roomHandler } from "./room";
 const port = 8080;
 
 const app = express();
@@ -19,10 +20,7 @@ io.on("connection",(socket)=>{
 console.log('user is connected');
 
 
-// join room event.
-socket.on("join-room",()=>{
-  console.log("join room event triggered.")
-})
+roomHandler(socket);
 
 
 

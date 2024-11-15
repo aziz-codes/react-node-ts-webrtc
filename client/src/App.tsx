@@ -7,7 +7,9 @@ const App = () => {
     socket(url);
   },[])
   return (
-    <div>App</div>
+    <div>
+      <button className='text-red-500'>start a new meeting.</button>
+    </div>
   )
 }
 

@@ -1,6 +1,6 @@
  import { useSocket } from "../context/room-context"
 const JoinRoomBtn = () => {
-    const socket = useSocket();
+    const {socket} = useSocket();
 const createRoom = ()=>{
     socket.emit("create-room");
 }

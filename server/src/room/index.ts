@@ -29,20 +29,20 @@ export const roomHandler = (socket: Socket) => {
 
   //   join room handler.
   const joinRoom = ({ roomId, peerId }: IRoomParams) => {
-
-    console.log(
-      `Room ID is ${roomId} & peer ID is ${peerId}`
-    );
+   console.log(`new user with peer id ${peerId} joined room`)
     if (rooms[roomId]) {
-      console.log('duplicate tab room in this block')
+   
       rooms[roomId].push(peerId);
       socket.join(roomId);
+     
+
+      socket.to(roomId).emit("user-joined",{peerId})
 
       socket.emit("get-users", {
         roomId,
         participants: rooms[roomId],
       });
-      console.log('current room details are ',rooms)
+       
     }
 
     socket.emit('get-users',rooms)

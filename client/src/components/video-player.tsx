@@ -11,7 +11,7 @@ const VideoPlayer: React.FC<{stream:MediaStream}>= ({stream}) => {
   },[stream])
 
   return (
-    <video ref={videoRef} autoPlay  className='h-full w-full object-cover'>s</video>
+    <video ref={videoRef} autoPlay   className='h-full w-full object-cover'>s</video>
   )
 }
 

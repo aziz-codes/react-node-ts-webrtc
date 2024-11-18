@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Peer from "peerjs";
 import { v4 as uuidV4 } from 'uuid';
 import { peersReducer } from "./peer-reducer";
-import { addPeerAction } from "./peer-actions";
+import { addPeerAction, removePeerAction } from "./peer-actions";
 
 const url = "http://localhost:8080";
 
@@ -26,7 +26,9 @@ export const RoomContextProvider = ({ children }: { children: React.ReactNode })
   const getUsers = ({ participants }: { participants: string[] }) => {
     setItems(participants);
   };
-
+const removeUser = (peerId:string)=>{
+  dispatch(removePeerAction(peerId))
+}
   useEffect(() => {
     const meId = uuidV4();
     const peer = new Peer(meId); // Create a new peer instance
@@ -45,6 +47,7 @@ export const RoomContextProvider = ({ children }: { children: React.ReactNode })
 
     socket.on("room-created", enterRoom);
     socket.on("get-users", getUsers);
+    socket.on("user-disconnected",removeUser)
 
     return () => {
       socket.off("room-created");

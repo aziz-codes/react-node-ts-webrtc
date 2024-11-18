@@ -16,7 +16,7 @@ export const RoomContextProvider = ({
 }) => {
   const navigate = useNavigate();
   const [me,setMe] = useState<Peer>()
-
+const [stream,setStream] =useState<MediaStream>()
   const [items, setItems] = useState<string[]|null>(null);
 
 
@@ -32,13 +32,32 @@ export const RoomContextProvider = ({
     const meId = uuidV4();
     const peer = new Peer(meId);
     setMe(peer)
+
+
+    // media stream
+    try{
+ navigator.mediaDevices.getUserMedia({
+  video: true,
+  audio: true,
+  
+ }).then((stream)=>{
+  setStream(stream);
+ })
+    }
+    catch(err){
+      console.log(err);
+    }
+
+
+
+
     socket.on("room-created", enterRoom);
 
 
     socket.on('get-users',getUsers)
   }, []);
 
-  return <RoomContext.Provider value={{socket,me,items}}>{children}</RoomContext.Provider>;
+  return <RoomContext.Provider value={{socket,me,items,stream}}>{children}</RoomContext.Provider>;
 };
 
 export const useSocket = () => useContext(RoomContext);

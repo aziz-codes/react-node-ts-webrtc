@@ -20,6 +20,7 @@ export const roomHandler = (socket: Socket) => {
   const leaveRoom = ({roomId,peerId}:IRoomParams)=>{
     if(rooms[roomId]){
       rooms[roomId] = rooms[roomId].filter((id)=>id !==peerId);
+      socket.to(roomId).emit("user-disconnected",peerId)
     }
   }
 

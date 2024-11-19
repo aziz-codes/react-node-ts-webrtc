@@ -18,6 +18,7 @@ export const RoomContextProvider = ({ children }: { children: React.ReactNode })
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [items, setItems] = useState<string[] | null>(null);
   const [peers, dispatch] = useReducer(peersReducer, {});
+  const [screenSharingId,setScreenSharingId] = useState<string>("")
 
   const enterRoom = ({ roomId }: { roomId: string }) => {
     navigate(`/room/${roomId}`);
@@ -29,6 +30,28 @@ export const RoomContextProvider = ({ children }: { children: React.ReactNode })
 const removeUser = (peerId:string)=>{
   dispatch(removePeerAction(peerId))
 }
+
+
+
+const switchStream = (stream:MediaStream)=>{
+   setStream(stream);
+   setScreenSharingId(me?.id || "");
+
+  //  getting screen share from participants
+  Object.values(me?.connections).forEach((connection:any)=>{
+    const videoTrack = stream?.getTracks().find((track)=>track.kind === "video");
+    connection[0].peerConnection.getSenders()[1].replaceTrack(videoTrack).catch((err:any)=>console.log('err is ',err))
+  })
+}
+   const shareScreen = ()=>{
+    if(screenSharingId){
+      navigator.mediaDevices.getUserMedia({video: true,audio:true}).then(switchStream)
+    }
+    else
+    navigator.mediaDevices.getDisplayMedia({}).then(switchStream)
+   }
+
+
   useEffect(() => {
     const meId = uuidV4();
     const peer = new Peer(meId); // Create a new peer instance
@@ -88,7 +111,7 @@ const removeUser = (peerId:string)=>{
   console.log({ peers });
 
   return (
-    <RoomContext.Provider value={{ socket, me, items, stream,peers}}>
+    <RoomContext.Provider value={{ socket, me, items, stream,peers,shareScreen}}>
       {children}
     </RoomContext.Provider>
   );

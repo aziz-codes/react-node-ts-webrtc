@@ -61,7 +61,15 @@ function getAllUsers(){
 }
 
 
+// hanlder to start share screen.
 
+const startSharing=({peerId,roomId}:IRoomParams)=>{
+socket.to(roomId).emit("user-started-sharing",peerId)
+}
+
+const stopSharing = (roomId:string)=>{
+  socket.to(roomId).emit("user-stop-sharing");
+}
   socket.on("create-room", createRoom);
 
   // join room event.
@@ -69,4 +77,7 @@ function getAllUsers(){
 
   // get all users
   socket.on('get-users',getAllUsers);
+
+  socket.on("start-sharing",startSharing)
+  socket.on("stop-sharing",stopSharing)
 };
